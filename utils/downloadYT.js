@@ -7,10 +7,12 @@ module.exports = async ({ client, message, user }) => {
 	const { video } = user
 	const option = video.labels[Number(message.body-1)]
 
-	await client.sendText(message.from, 'Baixando...')
+	await client.sendText(message.from, `Baixando "${video.title}" em ${option.quality}`)
 
-	await new Promise((resolve) => {
-    ytdl(video.url, {
+	const title = video.title.replace(/[\/\\|?<>*:“]/gm, '-')
+
+	await new Promise((resolve, reject) => {
+    const stream = ytdl(video.url, {
       format: 'mp4',
       quality: option.itag,
 			filter: 'videoandaudio',
@@ -19,11 +21,15 @@ module.exports = async ({ client, message, user }) => {
 					'Cookie'
 				}
 			}*/
-    }).pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'downloads', `${video.title}-${option.quality}.mp4`)))
-    .on('finish', () => resolve())
+    })
+		.pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'downloads', `${title}-${option.quality}.mp4`)))
+    .on('finish', () => {
+			resolve()
+			stream.close()
+		})
   })
 
-  const videoBuffer = fs.readFileSync((path.resolve(__dirname, '..', 'downloads', `${video.title}-${option.quality}.mp4`)))
+  const videoBuffer = fs.readFileSync((path.resolve(__dirname, '..', 'downloads', `${title}-${option.quality}.mp4`)))
   const dataURL = buri('video/mp4', videoBuffer)
 
   //console.log(dataURL)
@@ -31,7 +37,7 @@ module.exports = async ({ client, message, user }) => {
   await client.sendFile(
     message.from,
     dataURL,
-    `${video.title}-${option.quality}.mp4`,
+    `${title}-${option.quality}.mp4`,
     'Seu video :)'
   )
 

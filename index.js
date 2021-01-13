@@ -1,7 +1,7 @@
 require('dotenv').config()
 const wa = require('@open-wa/wa-automate')
 const Loader = require('./struct/LoaderCommands')
-const downloadVideo = require('./utils/downloadVideo')
+const downloadVideo = require('./utils/downloadYT')
 
 const { resolve } = require('path')
 

@@ -10,9 +10,9 @@ class Download extends Command {
   }
 
   async run({ message, args }) {
-    const url = args[0]
+    const url = `${args[0]}`.replace('https://youtu.be/', 'https://www.youtube.com/watch?v=')
 
-    if(!url) return this.client.sendText(message.from, `Você não informou o link do video`)
+    if(!url) return await this.client.sendText(message.from, `Você não informou o link do video`)
 
     const info = await ytdl.getInfo(url);
 
