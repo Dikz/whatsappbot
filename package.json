@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@open-wa/wa-automate": "^3.1.12",
+    "buffer-to-data-url": "^1.0.0",
     "dotenv": "^8.2.0",
     "ytdl-core": "^4.4.3"
   }

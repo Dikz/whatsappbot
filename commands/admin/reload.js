@@ -4,7 +4,8 @@ const reloadCommands = require('../../utils/reloadCommands')
 class Reload extends Command {
   constructor() {
     super({
-      name: 'reload'
+      name: 'reload',
+			aliases: ['r']
     });
   }
 
